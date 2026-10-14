@@ -33,7 +33,7 @@ function openDb(file) {
         seat_number TEXT NOT NULL,
         UNIQUE(schedule_id, seat_number));
 
-    // 1 kursi hanya boleh punya 1 lock (UNIQUE = penjaga race condition)
+    -- 1 kursi hanya boleh punya 1 lock (UNIQUE = penjaga race condition)
     CREATE TABLE IF NOT EXISTS seat_locks (
         id INTEGER PRIMARY KEY,
         seat_id INTEGER NOT NULL UNIQUE REFERENCES seats(id),
@@ -47,7 +47,7 @@ function openDb(file) {
         schedule_id INTEGER NOT NULL REFERENCES schedules(id),
         total_price INTEGER NOT NULL, created_at INTEGER NOT NULL);
 
-    // 1 kursi hanya bisa dipesan sekali
+    -- 1 kursi hanya bisa dipesan sekali
         CREATE TABLE IF NOT EXISTS booking_seats (
         booking_id INTEGER NOT NULL REFERENCES bookings(id),
         seat_id INTEGER NOT NULL UNIQUE REFERENCES seats(id),
