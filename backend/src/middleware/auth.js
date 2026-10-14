@@ -8,7 +8,7 @@ module.exports = function auth(req, res, next) {
         return res.status(401).json({ error: 'UNAUTHENTICATED', message: 'Token tidak ada' });
     try {
         const p = jwt.verify(token, JWT_SECRET);
-        req.user = { id: p.sub, username: p.username };
+        req.user = { id: Number(p.sub), username: p.username };
         next();
     } catch (e) {
         const code = e.name === 'TokenExpiredError' ? 'TOKEN_EXPIRED' : 'TOKEN_INVALID';

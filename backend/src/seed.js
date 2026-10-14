@@ -17,15 +17,25 @@ function seed(db) {
     const sc = db.prepare('INSERT INTO schedules (route_id,operator_id,departure_time,arrival_time,price) VALUES (?,?,?,?,?)');
     const st = db.prepare('INSERT INTO seats (schedule_id,seat_number) VALUES (?,?)');
 
-    db.transaction(() => {
-        for (let d = 0; d < 7; d++) for (const r of routes) for (const h of [7, 13, 19]) {
-    const dep = new Date(); dep.setDate(dep.getDate() + d); dep.setHours(h, 0, 0, 0);
-    const arr = new Date(dep.getTime() + 3 * 3600e3);
-    const sid = sc.run(r, ops[h % 2], dep.toISOString(), arr.toISOString(), 120000).lastInsertRowid;
+db.transaction(() => {
+  for (let d = 0; d < 7; d++) {
+    // Tanggal hari ke-d dalam WIB (UTC+7), format YYYY-MM-DD
+    const day = new Date(Date.now() + 7 * 3600e3 + d * 86400e3).toISOString().slice(0, 10);
+
+    routes.forEach((r, ri) => {
+      [7, 13, 19].forEach((h, hi) => {
+        const dep = new Date(`${day}T${String(h).padStart(2, '0')}:00:00+07:00`);
+        const arr = new Date(dep.getTime() + 3 * 3600e3);
+        const operatorId = ops[(ri + hi) % ops.length];   // operator bergantian
+
+        const sid = sc.run(r, operatorId, dep.toISOString(), arr.toISOString(), 120000).lastInsertRowid;
         for (let row = 1; row <= 5; row++) for (const c of 'ABCD') st.run(sid, `${row}${c}`);
-        }
-    })();
+      });
+    });
+  }
+})();
 }
+
 module.exports = { seed };
 if (require.main === module) { seed(openDb(DB_FILE)); console.log('Seed selesai'); }
 
