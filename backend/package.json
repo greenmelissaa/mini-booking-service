@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seed.js",
+    "test": "jest --runInBand",
+    "loadtest": "node scripts/loadtest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1"
+  }
+}
