@@ -63,7 +63,10 @@ function createBookingService(db, clock, lockTtlMs) {
     catch (e) { if (e.code === 'SQLITE_CONSTRAINT_UNIQUE') throw new AppError(409, 'SEAT_BOOKED', 'Kursi sudah dipesan'); throw e; }
   };
 
-  const releaseLocks = (userId, seatIds) => { /* DELETE milik user ini saja, untuk tombol "Batal" */ };
+  const releaseLocks = (userId, seatIds) => { 
+    const ph = seatIds.map(() => '?').join(',');
+    return db.prepare(`DELETE FROM seat_locks WHERE user_id = ? AND seat_id IN (${ph})`).run(userId, ...seatIds).changes;
+  };
   const purgeExpired = () => q.purge.run(clock.now()).changes;
 
   return { lockSeats, confirmBooking, releaseLocks, purgeExpired };
