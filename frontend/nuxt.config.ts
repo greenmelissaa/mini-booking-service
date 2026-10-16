@@ -1,3 +1,5 @@
+// pengaturan utama aplikasi frontend 
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',   // biarkan tanggal yang sudah ada di file-mu
   devtools: { enabled: true },

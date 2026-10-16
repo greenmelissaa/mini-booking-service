@@ -1,3 +1,5 @@
+// untuk ubah kose error di backend jadi pesan yang bisa dipahami user 
+
 const MESSAGES: Record<string, string> = {
   SEAT_LOCKED: 'Kursi sedang dikunci pengguna lain.',
   SEAT_BOOKED: 'Kursi sudah dipesan.',
@@ -15,11 +17,17 @@ const MESSAGES: Record<string, string> = {
 
 export function errorMessage(e: any) {
   const status: number | undefined = e?.status ?? e?.statusCode ?? e?.response?.status
+  
+  // kalau gaada status sama skali, bisa jadi backendnya ga jalan
   const code: string = e?.data?.error ?? (status ? `HTTP_${status}` : 'NETWORK')
+  
+  // ambil pesan dari yang diatas, kalau gaada pake backend atau ga pesan umum
   const message = MESSAGES[code] ?? e?.data?.message ?? 'Terjadi kesalahan, coba lagi.'
   return { status, code, message }
 }
 
+// untuk cek kalua errornya ada hubungannya sama login
+// dipake untuk tampilim tombol "Masuk lagi" di output 
 export function isAuthError(code: string) {
   return ['TOKEN_INVALID', 'TOKEN_EXPIRED', 'REFRESH_INVALID', 'UNAUTHENTICATED'].includes(code)
 }

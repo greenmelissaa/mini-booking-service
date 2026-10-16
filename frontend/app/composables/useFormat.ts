@@ -1,3 +1,5 @@
+// fungsi untuk mengubah format tanggal, jam, harga, dan countdown
+
 const TZ = 'Asia/Jakarta'
 
 export function formatDateTime(iso: string) {
@@ -15,6 +17,7 @@ export function formatRupiah(n: number) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n)
 }
 
+// hitung countdown "menit:detik"
 export function formatCountdown(ms: number) {
   const total = Math.max(0, Math.ceil(ms / 1000))
   const m = String(Math.floor(total / 60)).padStart(2, '0')
