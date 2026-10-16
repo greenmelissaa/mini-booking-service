@@ -1,3 +1,5 @@
+// semua tabel yang dibutuhin
+
 const Database = require('better-sqlite3');
 
 function openDb(file) {
