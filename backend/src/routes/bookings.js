@@ -5,6 +5,7 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const { AppError } = require('../services/booking.service');
+const { isBookingClosed } = require("../scheduleRules");
 
 module.exports = function bookingRoutes(svc, db) {
   const router = express.Router();

@@ -49,6 +49,11 @@ function createApp({
     res.json(db.prepare('SELECT id, origin, destination FROM routes ORDER BY origin').all())
   );
 
+  // ambil api operator yang ada di db.js 
+  app.get('/api/operator', (req, res) => 
+    res.json(db.prepare('SELECT id, name FROM operators').all())
+  );
+  
   // Terproteksi (butuh token) - endpoint wajib login
   app.use('/api/locks', lockRoutes(svc));
   app.use('/api/bookings', bookingRoutes(svc, db));
@@ -76,5 +81,6 @@ function createApp({
   app.locals.svc = svc;      
   return app;
 }
+
 
 module.exports = { createApp };
